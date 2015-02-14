@@ -1,0 +1,37 @@
+/*
+ * Web Starter Kit
+ *
+ * Multi-screen layout styles for your page. Brought to you by the
+ * Web Starter Kit team.
+ *
+ */
+@import 'keenio-dashboards';
+
+a[ng-click]:hover, a[data-ng-click]:hover {
+  cursor: pointer;
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+.tbk-github-fork-ribbon {
+  position: absolute;
+  right: 0;
+  top:0;
+}
+
+.github-fork-ribbon {
+  background-color: #333;
+}
+
+.github-fork-ribbon a {
+  color: white;
+}
+
+.github-fork-ribbon a:visited{
+  color: white;
+}

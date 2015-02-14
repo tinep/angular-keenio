@@ -1,0 +1,131 @@
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        Pageviews by browser (past 24 hours)
+
+        <div class="pull-right">
+          <a data-ng-click="_toggleSourcePageviewsByBrowser = !_toggleSourcePageviewsByBrowser;">
+            <i class="fa fa-fw fa-code"></i> Source
+          </a>
+        </div>
+      </div>
+      <div class="chart-stage">
+        <div tbk-keen-areachart-demo-pageviews-by-browser>
+          Here should be an areachart.
+        </div>
+
+        <div data-ng-show="_toggleSourcePageviewsByBrowser">
+
+<h4>html</h4>
+<pre data-tbk-code-prettify="" data-lang="html">
+&lt;div tbk-keen-areachart-demo-pageviews-by-browser&gt;
+  Loading Pageviews By Browsers Areachart Demo.
+&lt;/div&gt;
+</pre>
+
+<h4>directive</h4>
+<pre data-tbk-code-prettify="">
+.directive('tbkKeenAreachartDemoPageviewsByBrowser', [function() {
+  var d = {
+    controller: ['$scope', 'tbkKeen', function($scope, Keen) {
+      $scope.query = new Keen.Query("count", {
+        eventCollection: "pageviews",
+        interval: "hourly",
+        groupBy: "user.device_info.browser.family",
+        timeframe: {
+          start: "2014-05-04T00:00:00.000Z",
+          end: "2014-05-05T00:00:00.000Z"
+        }
+      });
+
+      $scope.chartOptions = {
+        chartArea: {
+          height: "85%",
+          left: "5%",
+          top: "5%",
+          width: "80%"
+        },
+        isStacked: true
+      };
+    }],
+    template:
+    '&lt;div data-tbk-keen-areachart ' +
+    ' query="query" ' +
+    ' height="250" ' +
+    ' width="auto" ' +
+    ' chart-options="chartOptions" ' +
+    '&gt;&lt;/div&lt;'
+  };
+
+  return d;
+}])
+</pre>
+        </div>
+      </div>
+      <div class="chart-notes">
+        This is a sample text region to describe this chart.
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        Pageviews by browser (past 5 days)
+      </div>
+      <div class="chart-stage">
+        <div tbk-keen-piechart-demo-pageviews-by-browser>
+          Here should be a piechart.
+        </div>
+      </div>
+      <div class="chart-notes">
+        Notes go down here
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        Impressions by advertiser
+      </div>
+      <div class="chart-stage">
+        <div tbk-keen-columnchart-demo-impressions-by-advertiser>
+          Here should be a columnchart.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        Impressions by device
+      </div>
+      <div class="chart-stage">
+        <div tbk-keen-columnchart-demo-impressions-by-device>
+          Here should be a columnchart.
+        </div>
+      </div>
+      <div class="chart-notes">
+        Notes go down here
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        Impressions by country
+      </div>
+      <div class="chart-stage">
+        <div tbk-keen-columnchart-demo-impressions-by-country>
+          Here should be a columnchart.
+        </div>
+      </div>
+      <div class="chart-notes">
+        Notes go down here
+      </div>
+    </div>
+  </div>
+</div>
