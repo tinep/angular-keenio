@@ -1,0 +1,27 @@
+{
+  "name": "angular-keenio",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "tbk",
+      "email": "theborakompanioni+angular-keenio@gmail.com"
+    }
+  ],
+  "main": [
+    "dist/angular-keenio.js"
+  ],
+  "ignore": [
+    "src",
+    "test",
+    "Gruntfile.js",
+    "**/.*"
+  ],
+  "dependencies": {
+    "keen-js": "~3.2.3"
+  },
+  "devDependencies": {
+    "angular-mocks": ">=1.2.0",
+    "angular-scenario": ">=1.2.0",
+    "angular": ">=1.2.0"
+  }
+}
