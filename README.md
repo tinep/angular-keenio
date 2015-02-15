@@ -1,7 +1,7 @@
 angular-keenio
 =================
 
-Angular directives for [Keen.io](https://keen.io/docs/data-visualization/).
+[Keen.io](https://keen.io/docs/data-visualization/) directives for Angular.js.
 
 ### Demo
 See some examples on the [demo page](https://theborakompanioni.github.io/angular-keenio/).
