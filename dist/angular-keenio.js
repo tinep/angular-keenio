@@ -186,18 +186,16 @@
   angular.module('angular-keenio.services')
 
     .value('tbkKeenDefaultConfig', {
-
+      projectId: 'YOUR_PROJECT_ID',   // String (required always)
+      writeKey: 'YOUR_WRITE_KEY',     // String (required for sending data)
+      readKey: 'YOUR_READ_KEY',       // String (required for querying data)
+      protocol: 'https',              // String (optional: https | http | auto)
+      host: 'api.keen.io/3.0',        // String (optional)
+      requestType: 'jsonp'            // String (optional: jsonp, xhr, beacon)
     })
 
     .provider('tbkKeenConfig', [function () {
-      var config = {
-        projectId: 'YOUR_PROJECT_ID',   // String (required always)
-        writeKey: 'YOUR_WRITE_KEY',     // String (required for sending data)
-        readKey: 'YOUR_READ_KEY',       // String (required for querying data)
-        protocol: 'https',              // String (optional: https | http | auto)
-        host: 'api.keen.io/3.0',        // String (optional)
-        requestType: 'jsonp'            // String (optional: jsonp, xhr, beacon)
-      };
+      var config = {};
 
       this.projectId = function (projectId) {
         config.projectId = projectId;
@@ -234,10 +232,7 @@
     }])
 
     .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', function (Keen, KeenConfig) {
-      return new Keen({
-        projectId: KeenConfig.projectId,
-        readKey: KeenConfig.readKey
-      });
+      return new Keen(KeenConfig);
     }])
   ;
 
