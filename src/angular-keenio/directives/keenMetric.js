@@ -1,12 +1,15 @@
 (function (angular) {
 
   angular.module('angular-keenio.directives')
+
     .directive('tbkKeenMetric', ['tbkKeenClient', function (tbkKeenClient) {
       var prepareClasses = function (scope) {
+        var containerClass = scope.containerClass || 'tbk-keen-metric';
         return {
-          loading: scope.loadingClass || 'tbk-angular-keenio-count-metric-loading',
-          error: scope.errorClass || 'tbk-angular-keenio-count-metric-error',
-          success: scope.successClass || 'tbk-angular-keenio-count-metric-success'
+          container: containerClass,
+          loading: scope.loadingClass || containerClass + '-loading',
+          error: scope.errorClass || containerClass + '-error',
+          success: scope.successClass || containerClass + '-success'
         };
       };
       var prepareTexts = function (scope) {
@@ -33,6 +36,7 @@
           factor: '@',
           loadingText: '@',
           errorText: '@',
+          containerClass: '@',
           loadingClass: '@',
           successClass: '@',
           errorClass: '@'
@@ -50,7 +54,7 @@
           $scope.response = null;
         }],
         link: function ($scope, $element) {
-          $element.addClass('tbk-angular-keenio-count-metric');
+          $element.addClass($scope.classes.container);
 
           var resetState = function () {
             $scope.flags.loading = true;
@@ -64,21 +68,15 @@
           (function fetchMetric() {
             resetState();
 
-            tbkKeenClient.run($scope.query, function (err, response) {
+            tbkKeenClient.run($scope.query, function (error, response) {
               $scope.response = response;
-              $scope.result = response.result * $scope.options.factor;
-
+              $scope.error = error;
+              $scope.flags.error = !!error;
               $scope.flags.loading = false;
-              $element.removeClass($scope.classes.loading);
+              $scope.result = error ? null : response.result * $scope.options.factor;
 
-              if (err) {
-                $scope.flags.error = true;
-                $element.addClass($scope.classes.error);
-              }
-              else {
-                $scope.flags.error = false;
-                $element.addClass($scope.successClass);
-              }
+              $element.removeClass($scope.classes.loading);
+              $element.addClass(error ? $scope.classes.error : $scope.classes.success);
 
               $scope.$digest();
             });
@@ -117,7 +115,7 @@
 
           $scope.query = new tbkKeen.Query('count_unique', config);
         }],
-        template: '<div tbk-keen-metric data-query="query"></div>'
+        template: '<span tbk-keen-metric data-query="query"></span>'
       };
 
       return d;

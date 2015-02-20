@@ -208,21 +208,15 @@
           (function fetchMetric() {
             resetState();
 
-            tbkKeenClient.run($scope.query, function (err, response) {
+            tbkKeenClient.run($scope.query, function (error, response) {
               $scope.response = response;
-              $scope.result = response.result * $scope.options.factor;
-
+              $scope.error = error;
+              $scope.flags.error = !!error;
               $scope.flags.loading = false;
-              $element.removeClass($scope.classes.loading);
+              $scope.result = error ? null : response.result * $scope.options.factor;
 
-              if (err) {
-                $scope.flags.error = true;
-                $element.addClass($scope.classes.error);
-              }
-              else {
-                $scope.flags.error = false;
-                $element.addClass($scope.successClass);
-              }
+              $element.removeClass($scope.classes.loading);
+              $element.addClass(error ? $scope.classes.error : $scope.classes.success);
 
               $scope.$digest();
             });
@@ -261,7 +255,7 @@
 
           $scope.query = new tbkKeen.Query('count_unique', config);
         }],
-        template: '<div tbk-keen-metric data-query="query"></div>'
+        template: '<span tbk-keen-metric data-query="query"></span>'
       };
 
       return d;
