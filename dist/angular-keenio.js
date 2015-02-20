@@ -145,12 +145,15 @@
 (function (angular) {
 
   angular.module('angular-keenio.directives')
+
     .directive('tbkKeenMetric', ['tbkKeenClient', function (tbkKeenClient) {
       var prepareClasses = function (scope) {
+        var containerClass = scope.containerClass || 'tbk-keen-metric';
         return {
-          loading: scope.loadingClass || 'tbk-angular-keenio-count-metric-loading',
-          error: scope.errorClass || 'tbk-angular-keenio-count-metric-error',
-          success: scope.successClass || 'tbk-angular-keenio-count-metric-success'
+          container: containerClass,
+          loading: scope.loadingClass || containerClass + '-loading',
+          error: scope.errorClass || containerClass + '-error',
+          success: scope.successClass || containerClass + '-success'
         };
       };
       var prepareTexts = function (scope) {
@@ -177,6 +180,7 @@
           factor: '@',
           loadingText: '@',
           errorText: '@',
+          containerClass: '@',
           loadingClass: '@',
           successClass: '@',
           errorClass: '@'
@@ -194,7 +198,7 @@
           $scope.response = null;
         }],
         link: function ($scope, $element) {
-          $element.addClass('tbk-angular-keenio-count-metric');
+          $element.addClass($scope.classes.container);
 
           var resetState = function () {
             $scope.flags.loading = true;
