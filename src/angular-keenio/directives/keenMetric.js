@@ -1,16 +1,15 @@
 (function (angular) {
 
   angular.module('angular-keenio.directives')
-
     .directive('tbkKeenMetric', ['tbkKeenClient', function (tbkKeenClient) {
-      var prepareClasses = function(scope) {
+      var prepareClasses = function (scope) {
         return {
           loading: scope.loadingClass || 'tbk-angular-keenio-count-metric-loading',
           error: scope.errorClass || 'tbk-angular-keenio-count-metric-error',
           success: scope.successClass || 'tbk-angular-keenio-count-metric-success'
         };
       };
-      var prepareTexts = function(scope) {
+      var prepareTexts = function (scope) {
         return {
           prefix: scope.prefix || '',
           postfix: scope.postfix || '',
@@ -18,10 +17,10 @@
           error: scope.errorText || 'An error occured!'
         };
       };
-      var prepareOptions = function(scope) {
+      var prepareOptions = function (scope) {
         return {
-          scale: scope.scale || 0,
-          factor: scope.factor || 1
+          scale: parseInt(scope.scale, 10) || 0,
+          factor: parseInt(scope.factor, 10) || 1
         };
       };
 
@@ -51,19 +50,23 @@
           $scope.response = null;
         }],
         link: function ($scope, $element) {
-
           $element.addClass('tbk-angular-keenio-count-metric');
 
-          (function fetchMetric() {
+          var resetState = function () {
             $scope.flags.loading = true;
             $scope.flags.error = false;
 
             $element.addClass($scope.classes.loading);
             $element.removeClass($scope.classes.success);
             $element.removeClass($scope.classes.error);
+          };
+
+          (function fetchMetric() {
+            resetState();
 
             tbkKeenClient.run($scope.query, function (err, response) {
               $scope.response = response;
+              $scope.result = response.result * $scope.options.factor;
 
               $scope.flags.loading = false;
               $element.removeClass($scope.classes.loading);
@@ -84,7 +87,7 @@
         template: '<span>' +
         '<span data-ng-hide="flags.loading || flags.error">' +
         '{{ texts.prefix }}' +
-        '{{ options.factor * response.result | number:options.scale }}' +
+        '{{ result | number:options.scale }}' +
         '{{ texts.postfix }}' +
         '</span>' +
         '<span data-ng-show="flags.loading">' +
@@ -119,7 +122,6 @@
 
       return d;
     }])
-
   ;
 
 })(angular);
