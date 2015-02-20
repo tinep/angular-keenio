@@ -3,9 +3,35 @@
   angular.module('angular-keenio.directives')
 
     .directive('tbkKeenMetric', ['tbkKeenClient', function (tbkKeenClient) {
+      var prepareClasses = function(scope) {
+        return {
+          loading: scope.loadingClass || 'tbk-angular-keenio-count-metric-loading',
+          error: scope.errorClass || 'tbk-angular-keenio-count-metric-error',
+          success: scope.successClass || 'tbk-angular-keenio-count-metric-success'
+        };
+      };
+      var prepareTexts = function(scope) {
+        return {
+          prefix: scope.prefix || '',
+          postfix: scope.postfix || '',
+          loading: scope.loadingText || 'Loading...',
+          error: scope.errorText || 'An error occured!'
+        };
+      };
+      var prepareOptions = function(scope) {
+        return {
+          scale: scope.scale || 0,
+          factor: scope.factor || 1
+        };
+      };
+
       var d = {
         scope: {
           query: '=',
+          prefix: '@',
+          postfix: '@',
+          scale: '@',
+          factor: '@',
           loadingText: '@',
           errorText: '@',
           loadingClass: '@',
@@ -13,15 +39,9 @@
           errorClass: '@'
         },
         controller: ['$scope', function ($scope) {
-          $scope.texts = {
-            loading: $scope.loadingText || 'Loading...',
-            error: $scope.errorText || 'An error occured!'
-          };
-          $scope.classes = {
-            loading: $scope.loadingClass || 'tbk-angular-keenio-count-metric-loading',
-            error: $scope.errorClass || 'tbk-angular-keenio-count-metric-error',
-            success: $scope.successClass || 'tbk-angular-keenio-count-metric-success'
-          };
+          $scope.texts = prepareTexts($scope);
+          $scope.classes = prepareClasses($scope);
+          $scope.options = prepareOptions($scope);
 
           $scope.flags = {
             loading: false,
@@ -62,9 +82,17 @@
           })();
         },
         template: '<span>' +
-        '<span data-ng-hide="flags.loading || flags.error">{{ response.result | number:0 }}</span>' +
-        '<span data-ng-show="flags.loading">{{ texts.loading }}</span>' +
-        '<span data-ng-show="flags.error">{{ texts.error }}</span>' +
+        '<span data-ng-hide="flags.loading || flags.error">' +
+        '{{ texts.prefix }}' +
+        '{{ options.factor * response.result | number:options.scale }}' +
+        '{{ texts.postfix }}' +
+        '</span>' +
+        '<span data-ng-show="flags.loading">' +
+        '{{ texts.loading }}' +
+        '</span>' +
+        '<span data-ng-show="flags.error">' +
+        '{{ texts.error }}' +
+        '</span>' +
         '</span>'
       };
 
