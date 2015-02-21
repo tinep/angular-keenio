@@ -167,7 +167,7 @@
       var prepareOptions = function (scope) {
         return {
           scale: parseInt(scope.scale, 10) || 0,
-          factor: parseInt(scope.factor, 10) || 1
+          factor: parseFloat(scope.factor) || 1
         };
       };
 
