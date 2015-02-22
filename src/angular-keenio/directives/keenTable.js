@@ -28,6 +28,28 @@
       return d;
     }])
 
+    .directive('tbkKeenDefaultTable', [function () {
+      var d = {
+        scope: {
+          title: '@',
+          analysisType: '@',
+          eventCollection: '@',
+          queryOptions: '=?'
+        },
+        controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
+          var queryOptions = $scope.queryOptions || {};
+          queryOptions.eventCollection = $scope.eventCollection;
+          $scope.analysisType = $scope.analysisType || 'extraction';
+          $scope.query = new tbkKeen.Query($scope.analysisType, queryOptions);
+        }],
+        template: '<div tbk-keen-table ' +
+        ' data-query="query" ' +
+        ' data-title="{{title}}"' +
+        '></div>'
+      };
+
+      return d;
+    }])
   ;
 
 })(angular);
