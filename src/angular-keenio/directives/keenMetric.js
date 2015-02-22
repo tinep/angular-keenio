@@ -1,7 +1,7 @@
 (function (angular) {
 
   angular.module('angular-keenio.directives')
-    
+
     .directive('tbkKeenMetric', [
       '$injector', '$filter', 'tbkKeenClient', function ($injector, $filter, tbkKeenClient) {
         var prepareClasses = function (scope) {
@@ -117,26 +117,52 @@
         return d;
       }])
 
-    .directive('tbkKeenCountUniqueMetric', [function () {
-      var d = {
-        scope: {
-          eventCollection: '@',
-          targetProperty: '@',
-          queryConfig: '=?'
-        },
-        controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
-          var config = $scope.queryConfig || {};
+    .directive('tbkKeenDefaultMetric', [
+      '$injector', '$filter', 'tbkKeenClient', function ($injector, $filter, tbkKeenClient) {
 
-          config.eventCollection = config.eventCollection || $scope.eventCollection;
-          config.targetProperty = config.targetProperty || $scope.targetProperty;
+        var d = {
+          scope: {
+            analysisType: '@',
+            targetProperty: '@',
+            eventCollection: '@',
+            queryOptions: '=?',
+            prefix: '@',
+            postfix: '@',
+            scale: '@',
+            factor: '@',
+            filter: '@',
+            loadingText: '@',
+            errorText: '@',
+            containerClass: '@',
+            loadingClass: '@',
+            successClass: '@',
+            errorClass: '@'
+          },
+          controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
+            var queryOptions = $scope.queryOptions || {};
+            queryOptions.eventCollection = $scope.eventCollection;
+            queryOptions.targetProperty = $scope.targetProperty;
 
-          $scope.query = new tbkKeen.Query('count_unique', config);
-        }],
-        template: '<span tbk-keen-metric data-query="query"></span>'
-      };
+            $scope.query = new tbkKeen.Query($scope.analysisType, queryOptions);
+          }],
+          template: '<span data-tbk-keen-metric ' +
+          ' data-query="query" ' +
+          ' data-prefix="{{prefix}}" ' +
+          ' data-postfix="{{postfix}}" ' +
+          ' data-scale="{{scale}}" ' +
+          ' data-factor="{{factor}}" ' +
+          ' data-filter="{{filter}}" ' +
+          ' data-loading-text="{{loadingText}}" ' +
+          ' data-error-text="{{errorText}}" ' +
+          ' data-container-class="{{containerClass}}" ' +
+          ' data-loading-class="{{loadingClass}}" ' +
+          ' data-success-class="{{successClass}}" ' +
+          ' data-error-class="{{errorClass}}" ' +
+          '></span>'
+        };
 
-      return d;
-    }])
+        return d;
+      }])
   ;
 
 })(angular);
