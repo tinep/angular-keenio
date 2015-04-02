@@ -62,7 +62,7 @@
           var url = keenConfig.protocol + '://' + keenConfig.host + query;
 
           return keenClient.get(url, params, keenConfig.readKey, callback);
-        }
+        };
       }])
   ;
 

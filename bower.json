@@ -1,6 +1,6 @@
 {
   "name": "angular-keenio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "authors": [
     {
       "name": "tbk",
@@ -13,8 +13,9 @@
   "ignore": [
     "src",
     "test",
-    "Gruntfile.js",
-    "**/.*"
+    "gulpfile.js",
+    "karma-*.conf.js",
+    "dist/coverage"
   ],
   "dependencies": {
     "keen-js": "~3.2.3"
