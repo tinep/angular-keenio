@@ -51,6 +51,19 @@
     .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', function (Keen, KeenConfig) {
       return new Keen(KeenConfig);
     }])
+
+    .factory('tbkKeenHttpGet', [
+      'tbkKeenConfig',
+      'tbkKeenClient',
+      function (keenConfig, keenClient) {
+        return function (queryTemplate, params, callback) {
+          var query = queryTemplate.replace('<project_id>', keenConfig.projectId);
+
+          var url = keenConfig.protocol + '://' + keenConfig.host + query;
+
+          return keenClient.get(url, params, keenConfig.readKey, callback);
+        }
+      }])
   ;
 
 })(angular);
