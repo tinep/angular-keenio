@@ -1,15 +1,34 @@
 {
   "name": "angular-keenio",
   "version": "0.0.3",
+  "license": "MIT",
+  "main": [
+    "dist/angular-keenio.js"
+  ],
+  "description": "Keen.io directives for AngularJS",
+  "keywords": [
+    "angular",
+    "analytics",
+    "metrics",
+    "tracking",
+    "logging",
+    "stats",
+    "pageviews",
+    "keen",
+    "keen.io",
+    "keen-io"
+  ],
+  "homepage": "https://github.com/theborakompanioni/angular-keenio",
   "authors": [
     {
       "name": "tbk",
       "email": "theborakompanioni+angular-keenio@gmail.com"
     }
   ],
-  "main": [
-    "dist/angular-keenio.js"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/theborakompanioni/angular-keenio.git"
+  },
   "ignore": [
     "src",
     "test",
