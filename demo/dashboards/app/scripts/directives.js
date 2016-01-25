@@ -11,9 +11,14 @@ angular.module('angular-keenio-demos')
         lang: '@',
         showLinenums: '@'
       },
-      compile: function ($element) {
-        var html = $element.html();
-        var pretty = $window.prettyPrintOne(html);
+      compile: function () {
+        // following does not work as expected..
+        // var html = $element.html();
+        // var pretty = $window.prettyPrintOne(html);
+        // $element.html(pretty);
+        // ...
+        // workaround is to add prettyprint-classes
+        // and call `prettyPrint()`:
 
         return function ($scope, $element) {
           $element.addClass('prettyprint');
@@ -26,11 +31,10 @@ angular.module('angular-keenio-demos')
             $element.addClass('linenums');
           }
 
-          //$element.html(pretty);
           setTimeout(function() {
             $window.prettyPrint();
           }, 1);
-        }
+        };
       }
     };
     return directive;
