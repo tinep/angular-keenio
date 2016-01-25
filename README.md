@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/theborakompanioni/angular-keenio.svg?branch=master)](https://travis-ci.org/theborakompanioni/angular-keenio)
+
 angular-keenio
 =================
 
@@ -55,6 +57,20 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
     .projectId(config.projectId)
     .readKey(config.readKey);
 }])
+```
+
+
+### Manually bootstrap application
+`Keen` must be ready for the directives to work properly.
+Bootstrap your angular application manually e.g.
+```
+<script>
+  angular.element(document).ready(function () {
+    Keen.ready(function () {
+      angular.bootstrap(document, ['myApp']);
+    });
+  });
+</script>
 ```
 
 Contribute
