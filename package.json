@@ -5,6 +5,9 @@
     "name": "tbk",
     "email": "theborakompanioni+angular-keenio@gmail.com"
   },
+  "scripts": {
+    "test": "gulp test-src test-dist-concatenated test-dist-minified"
+  },
   "dependencies": {},
   "devDependencies": {
     "chai": "^1.9.1",
