@@ -3,6 +3,7 @@ set -e # exit with nonzero exit code if anything fails
 
 cd demo/dashboards/
 
+npm install
 bower install
 gulp build
 
