@@ -9,7 +9,11 @@
           title: '@',
           width: '@',
           height: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
         },
         controller: ['$scope', 'tbkKeenClient', function($scope, tbkKeenClient) {
           $scope.keenClient = tbkKeenClient;
@@ -32,7 +36,11 @@
             title: $scope.title,
             height: $scope.height,
             width: $scope.width,
-            chartOptions: $scope.chartOptions
+            chartOptions: $scope.chartOptions,
+            colors: $scope.colors,
+            labels: $scope.labels,
+            colorMapping: $scope.colorMapping,
+            labelMapping: $scope.labelMapping
           });
         }
       };

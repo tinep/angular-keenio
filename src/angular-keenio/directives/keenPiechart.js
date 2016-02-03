@@ -10,7 +10,11 @@
           width: '@',
           height: '@',
           pieHole: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -28,6 +32,10 @@
         ' height="{{height}}" ' +
         ' width="{{width}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
@@ -44,7 +52,11 @@
           chartOptions: '=?',
           title: '@',
           width: '@',
-          height: '@'
+          height: '@',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
           $scope.analysisType = $scope.analysisType || 'count';
@@ -73,6 +85,10 @@
         ' width="{{width}}" ' +
         ' title="{{title}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
