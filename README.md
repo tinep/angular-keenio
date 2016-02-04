@@ -8,7 +8,57 @@ angular-keenio
 ### Demo
 See some examples on the [demo page](https://theborakompanioni.github.io/angular-keenio/).
 
-### Examples
+
+### Installation
+#### Configuration
+
+```javascript
+.config(['tbkKeenConfigProvider', function(tbkKeenConfigProvider) {
+  var config = {
+    projectId: "<MY_PROJECT_ID>",
+    readKey: "<MY_READ_KEY>",
+    writeKey: "<MY_WRITE_KEY>"
+  };
+
+  tbkKeenConfigProvider
+    .projectId(config.projectId)
+    .readKey(config.readKey)
+    .writeKey(config.writeKey);
+}])
+```
+
+#### Manually bootstrap application
+`Keen` must be ready for the directives to work properly.
+Bootstrap your angular application manually e.g.
+```
+<script>
+  angular.element(document).ready(function () {
+    Keen.ready(function () {
+      angular.bootstrap(document, ['myApp']);
+    });
+  });
+</script>
+```
+
+### Create Events
+
+```javascript
+.controller('MyController', [
+'$scope', 'tbkKeen', function($scope, Keen) {
+  Keen.addEvent('collectionName', {
+    here:  'are',
+    your: 'properties'
+  })
+  .then(function(res) {
+    console.log(res);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+}]);
+```
+
+### Display charts
 
 ##### html
 ```html
@@ -45,33 +95,8 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 }]);
 ```
 
-##### config
-```javascript
-.config(['tbkKeenConfigProvider', function(tbkKeenConfigProvider) {
-  var config = {
-    projectId: "<MY_PROJECT_ID>",
-    readKey: "<MY_READ_KEY>"
-  };
-
-  tbkKeenConfigProvider
-    .projectId(config.projectId)
-    .readKey(config.readKey);
-}])
-```
 
 
-### Manually bootstrap application
-`Keen` must be ready for the directives to work properly.
-Bootstrap your angular application manually e.g.
-```
-<script>
-  angular.element(document).ready(function () {
-    Keen.ready(function () {
-      angular.bootstrap(document, ['myApp']);
-    });
-  });
-</script>
-```
 
 Contribute
 ------------
