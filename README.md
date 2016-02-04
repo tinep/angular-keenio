@@ -33,7 +33,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 
 `Keen` must be ready for the directives to work properly. Bootstrap your angular application manually e.g.
 
-```
+```javascript
 <script>
   angular.element(document).ready(function () {
     Keen.ready(function () {
