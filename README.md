@@ -44,7 +44,7 @@ Bootstrap your angular application manually e.g.
 
 ```javascript
 .controller('MyController', [
-'$scope', 'tbkKeen', function($scope, Keen) {
+'$scope', 'tbkKeenClient', function($scope, Keen) {
   Keen.addEvent('collectionName', {
     here:  'are',
     your: 'properties'
