@@ -4,11 +4,12 @@
 
     .value('tbkKeenDefaultConfig', {
       projectId:   'YOUR_PROJECT_ID',   // String (required always)
-      writeKey:    'YOUR_WRITE_KEY',     // String (required for sending data)
-      readKey:     'YOUR_READ_KEY',       // String (required for querying data)
-      protocol: 'https',              // String (optional: https | http | auto)
-      host:        'api.keen.io/3.0',        // String (optional)
-      requestType: 'jsonp'            // String (optional: jsonp, xhr, beacon)
+      writeKey:    'YOUR_WRITE_KEY',    // String (required for sending data)
+      readKey:     'YOUR_READ_KEY',     // String (required for querying data)
+      masterKey:   'YOUR_MASTER_KEY',   // String (required for getting data of collections)
+      protocol:    'https',             // String (optional: https | http | auto)
+      host:        'api.keen.io/3.0',   // String (optional)
+      requestType: 'jsonp'              // String (optional: jsonp, xhr, beacon)
     })
 
     .provider('tbkKeenConfig', [function () {
@@ -24,6 +25,10 @@
       };
       this.readKey     = function (readKey) {
         config.readKey = readKey;
+        return this;
+      };
+      this.masterKey   = function (masterKey) {
+        config.masterKey = masterKey;
         return this;
       };
       this.protocol    = function (protocol) {
@@ -50,6 +55,10 @@
 
     .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', '$q', function (Keen, KeenConfig, $q) {
       var client = new Keen(KeenConfig);
+
+      function getInstance() {
+        return client;
+      }
 
       /**
        * Records a single event in Keen.io.
@@ -78,15 +87,15 @@
        *
        * <pre>
        *  var multipleEvents = {
-     *    "purchases": [
-     *      { item: "golden gadget", price: 2550, transaction_id: "f029342" },
-     *      { item: "a different gadget", price: 1775, transaction_id:
-     *   "f029342" }
-     *    ],
-     *    "transactions": [
-     *      { id: "f029342", items: 2, total: 4325 }
-     *    ]
-     *  };
+       *    "purchases": [
+       *      { item: "golden gadget", price: 2550, transaction_id: "f029342" },
+       *      { item: "a different gadget", price: 1775, transaction_id:
+       *   "f029342" }
+       *    ],
+       *    "transactions": [
+       *      { id: "f029342", items: 2, total: 4325 }
+       *    ]
+       *  };
        * </pre>
        * @returns {deferred.promise|{then, catch, finally}}
        */
@@ -104,24 +113,103 @@
         return deferred.promise;
       }
 
+      function Query(analysisType, properties) {
+        return client.Query(analysisType, properties);
+      }
+
+      /**
+       * Run query(ies) from Keen.io
+       * @param queries a single query or an array of queries
+       * @returns {deferred.promise|{then, catch, finally}}
+       */
+      function run(queries) {
+        var deferred = $q.defer();
+        client.run(queries, function (err, res) {
+          if (err) {
+            deferred.reject(err);
+          }
+          else {
+            deferred.resolve(res);
+          }
+        });
+        return deferred.promise;
+      }
+
+      /**
+       * Draw the chart
+       * @param query the Keen.io Query
+       * @param node
+       * @param config
+       */
+      function draw(query, node, config) {
+        client.draw(query, node, config);
+      }
+
+      function collections() {
+        var url = '<protocol>://<host>/projects/<project_id>/events'
+          .replace('<protocol>', KeenConfig.protocol)
+          .replace('<host>', KeenConfig.host)
+          .replace('<project_id>', KeenConfig.projectId);
+
+        return _sendRequest(url);
+      }
+
+      function collection(collection) {
+        var url = '<protocol>://<host>/projects/<project_id>/events/<collection>'
+          .replace('<protocol>', KeenConfig.protocol)
+          .replace('<host>', KeenConfig.host)
+          .replace('<project_id>', KeenConfig.projectId)
+          .replace('<collection>', collection);
+
+        return _sendRequest(url);
+      }
+
+      function properties(collection) {
+        var url = '<protocol>://<host>/projects/<project_id>/events/<collection>/properties'
+          .replace('<protocol>', KeenConfig.protocol)
+          .replace('<host>', KeenConfig.host)
+          .replace('<project_id>', KeenConfig.projectId)
+          .replace('<collection>', collection);
+
+        return _sendRequest(url);
+      }
+
+      function property(collection, property) {
+        var url = '<protocol>://<host>/projects/<project_id>/events/<collection>/properties/<property>'
+          .replace('<protocol>', KeenConfig.protocol)
+          .replace('<host>', KeenConfig.host)
+          .replace('<project_id>', KeenConfig.projectId)
+          .replace('<collection>', collection)
+          .replace('<property>', property);
+
+        return _sendRequest(url);
+      }
+
+      function _sendRequest(url) {
+        var deferred = $q.defer();
+
+        client.get(url, null, client.masterKey(), function (err, res) {
+          if (err) {
+            deferred.reject(err);
+          }
+          else {
+            deferred.resolve(res);
+          }
+        });
+        return deferred.promise;
+      }
+
       return {
-        addEvent:  addEvent,
-        addEvents: addEvents
+        getInstance: getInstance,
+        addEvent:    addEvent,
+        addEvents:   addEvents,
+        Query:       Query,
+        run:         run,
+        draw:        draw,
+        collections: collections,
+        collection:  collection,
+        properties:  properties,
+        property:    property,
       };
-    }])
-
-    .factory('tbkKeenHttpGet', [
-      'tbkKeenConfig',
-      'tbkKeenClient',
-      function (keenConfig, keenClient) {
-        return function (queryTemplate, params, callback) {
-          var query = queryTemplate.replace('<project_id>', keenConfig.projectId);
-
-          var url = keenConfig.protocol + '://' + keenConfig.host + query;
-
-          return keenClient.get(url, params, keenConfig.readKey, callback);
-        };
-      }])
-  ;
-
+    }]);
 })(angular);
