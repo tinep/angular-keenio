@@ -46,7 +46,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ## Record one event
 
 ```javascript
-.controller('MyController', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('MyController', ['$scope', 'tbkKeenClient', function($scope, KeenClient) {
   // Create a data object with the properties you want to send
   var purchaseEvent = {
     item: "golden gadget",  
@@ -57,7 +57,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
     }
   };
 
-  Keen.addEvent('purchases', purchaseEvent)
+  KeenClient.addEvent('purchases', purchaseEvent)
     .then(function(res) {
       console.log(res);
     })
@@ -70,7 +70,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ## Record multiple events
 
 ```javascript
-.controller('MyController', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('MyController', ['$scope', 'tbkKeenClient', function($scope, KeenClient) {
   var multipleEvents = {
     "purchases": [
       { item: "golden gadget", price: 2550, transaction_id: "f029342" },
@@ -84,7 +84,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
       }
     ]
   };
-  Keen.addEvents(multipleEvents)
+  KeenClient.addEvents(multipleEvents)
     .then(function(res) {
       console.log(res);
     })
@@ -97,14 +97,14 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ## Querying events
 
 ```javascript
-.controller('MyController', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('MyController', ['$scope', 'tbkKeen', 'tbkKeenClient', function($scope, Keen, KeenClient) {
   // Create a query instance
   var count = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "property",
     timeframe: "this_7_days"
   });
-  Keen.run(count)
+  KeenClient.run(count)
     .then(function(res) {
       console.log(res);
     })
@@ -134,7 +134,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ```
 
 ```javascript
-.controller('AreaChartCtrl', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('AreaChartCtrl', ['$scope', 'tbkKeen', function($scope, Keen) {
   $scope.query = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "user.device_info.browser.family",
@@ -170,7 +170,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ```
 
 ```javascript
-.controller('BarChartCtrl', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('BarChartCtrl', ['$scope', 'tbkKeen', function($scope, Keen) {
   $scope.query = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "user.device_info.browser.family",
@@ -206,7 +206,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ```
 
 ```javascript
-.controller('ColumnChartCtrl', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('ColumnChartCtrl', ['$scope', 'tbkKeen', function($scope, Keen) {
   $scope.query = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "user.device_info.browser.family",
@@ -242,7 +242,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ```
 
 ```javascript
-.controller('LineChartCtrl', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('LineChartCtrl', ['$scope', 'tbkKeen', function($scope, Keen) {
   $scope.query = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "user.device_info.browser.family",
@@ -281,7 +281,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 ```
 
 ```javascript
-.controller('PieChartCtrl', ['$scope', 'tbkKeenClient', function($scope, Keen) {
+.controller('PieChartCtrl', ['$scope', 'tbkKeen', function($scope, Keen) {
   $scope.query = new Keen.Query("count", {
     eventCollection: "pageviews",
     groupBy: "user.device_info.browser.family",
