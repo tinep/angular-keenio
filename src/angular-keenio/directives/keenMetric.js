@@ -12,6 +12,9 @@
           chartOptions: '=?',
           colors: '=?'
         },
+        controller: ['$scope', function($scope) {
+          $scope.colors = $scope.colors || [];
+        }],
         template:
         '<div data-tbk-keen-chart="metric" ' +
         ' title="{{title}}" ' +
