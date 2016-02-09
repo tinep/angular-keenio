@@ -146,7 +146,7 @@
 
             $scope.query = new tbkKeen.Query($scope.analysisType, queryOptions);
           }],
-          template: '<span data-tbk-keen-metric ' +
+          template: '<span data-tbk-keen-raw-metric ' +
           ' data-query="query" ' +
           ' data-prefix="{{prefix}}" ' +
           ' data-postfix="{{postfix}}" ' +
