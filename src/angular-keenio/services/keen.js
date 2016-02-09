@@ -6,8 +6,10 @@
       projectId:   'YOUR_PROJECT_ID',   // String (required always)
       writeKey:    'YOUR_WRITE_KEY',    // String (required for sending data)
       readKey:     'YOUR_READ_KEY',     // String (required for querying data)
-      masterKey:   'YOUR_MASTER_KEY',   // String (required for getting data of collections)
-      protocol:    'https',             // String (optional: https | http | auto)
+      masterKey:   'YOUR_MASTER_KEY',   // String (required for getting data of
+                                        // collections)
+      protocol:    'https',             // String (optional: https | http |
+                                        // auto)
       host:        'api.keen.io/3.0',   // String (optional)
       requestType: 'jsonp'              // String (optional: jsonp, xhr, beacon)
     })
@@ -53,12 +55,30 @@
       return $window.Keen;
     }])
 
-    .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', '$q', function (Keen, KeenConfig, $q) {
-      var client = new Keen(KeenConfig);
+    /**
+     * Provides the Keen.io client for your Angular application.
+     * If you want to work in a more angular way, you should use the `angularKeenClient` factory
+     * which will use promises instead of callbacks
+     */
+    .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', function (Keen, KeenConfig) {
+      return new Keen(KeenConfig);
+    }])
 
-      function getInstance() {
-        return client;
-      }
+    .factory('tbkKeenHttpGet', ['tbkKeenConfig', 'tbkKeenClient', function (keenConfig, keenClient) {
+      return function (queryTemplate, params, callback) {
+        var query = queryTemplate.replace('<project_id>', keenConfig.projectId);
+
+        var url = keenConfig.protocol + '://' + keenConfig.host + query;
+
+        return keenClient.get(url, params, keenConfig.readKey, callback);
+      };
+    }])
+
+    /**
+     * Fatory providing Keen.io APIs in the Angular way
+     */
+    .factory('angularKeenClient', ['tbkKeen', 'tbkKeenConfig', '$q', function (Keen, KeenConfig, $q) {
+      var client = new Keen(KeenConfig);
 
       /**
        * Records a single event in Keen.io.
@@ -200,7 +220,6 @@
       }
 
       return {
-        getInstance: getInstance,
         addEvent:    addEvent,
         addEvents:   addEvents,
         Query:       Query,
@@ -209,7 +228,7 @@
         collections: collections,
         collection:  collection,
         properties:  properties,
-        property:    property,
+        property:    property
       };
     }]);
 })(angular);
