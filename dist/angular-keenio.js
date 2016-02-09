@@ -29,7 +29,11 @@
           width: '@',
           height: '@',
           isStacked: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', function($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -48,6 +52,61 @@
         ' height="{{height}}" ' +
         ' width="{{width}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenBarchart', [function() {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          groupWidth: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
+        },
+        controller: ['$scope', function($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+            chartArea: {
+              height: '85%',
+              left: '5%',
+              top: '5%',
+              width: '100%'
+            },
+            bar: {
+              groupWidth: $scope.groupWidth || '85%'
+            },
+            isStacked: !!$scope.isStacked
+          };
+        }],
+        template:
+        '<div data-tbk-keen-chart="barchart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
@@ -67,7 +126,11 @@
           title: '@',
           width: '@',
           height: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
         },
         controller: ['$scope', 'tbkKeenClient', function($scope, tbkKeenClient) {
           $scope.keenClient = tbkKeenClient;
@@ -90,7 +153,11 @@
             title: $scope.title,
             height: $scope.height,
             width: $scope.width,
-            chartOptions: $scope.chartOptions
+            chartOptions: $scope.chartOptions,
+            colors: $scope.colors,
+            labels: $scope.labels,
+            colorMapping: $scope.colorMapping,
+            labelMapping: $scope.labelMapping
           });
         }
       };
@@ -112,7 +179,11 @@
           height: '@',
           isStacked: '@',
           groupWidth: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', function($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -134,6 +205,61 @@
         ' height="{{height}}" ' +
         ' width="{{width}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenLinechart', [function() {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          groupWidth: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
+        },
+        controller: ['$scope', function($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+            chartArea: {
+              height: '85%',
+              left: '5%',
+              top: '5%',
+              width: '100%'
+            },
+            bar: {
+              groupWidth: $scope.groupWidth || '85%'
+            },
+            isStacked: !!$scope.isStacked
+          };
+        }],
+        template:
+        '<div data-tbk-keen-chart="linechart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
@@ -323,7 +449,11 @@
           width: '@',
           height: '@',
           pieHole: '@',
-          chartOptions: '=?'
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -341,6 +471,10 @@
         ' height="{{height}}" ' +
         ' width="{{width}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
@@ -357,7 +491,11 @@
           chartOptions: '=?',
           title: '@',
           width: '@',
-          height: '@'
+          height: '@',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
         },
         controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
           $scope.analysisType = $scope.analysisType || 'count';
@@ -386,6 +524,10 @@
         ' width="{{width}}" ' +
         ' title="{{title}}" ' +
         ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
         '></div>'
       };
 
