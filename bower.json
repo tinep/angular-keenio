@@ -1,9 +1,9 @@
 {
   "name": "angular-keenio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "main": [
-    "dist/angular-keenio.js"
+    "dist/angular-keenio.min.js"
   ],
   "description": "Keen.io directives for AngularJS",
   "keywords": [
@@ -32,6 +32,8 @@
   "ignore": [
     "src",
     "test",
+    "demo",
+    "img",
     "gulpfile.js",
     "karma-*.conf.js",
     "dist/coverage"

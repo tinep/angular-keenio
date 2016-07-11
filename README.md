@@ -122,7 +122,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 
 ### Area Chart
 
-![Area chart](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-areachart.png)
+![Area chart](img/Keen-demo-areachart.png)
 
 ```html
 <div data-tbk-keen-piechart 
@@ -158,7 +158,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 
 ### Bar Chart
 
-![Bar chart](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-barchart.png)
+![Bar chart](img/Keen-demo-barchart.png)
 
 ```html
 <div data-tbk-keen-barchart 
@@ -194,7 +194,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 
 ### Column Chart
 
-![Column chart](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-columnchart.png)
+![Column chart](img/Keen-demo-columnchart.png)
 
 ```html
 <div data-tbk-keen-columnchart 
@@ -230,7 +230,7 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
 
 ### Line Chart
 
-![Line chart](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-linechart.png)
+![Line chart](img/Keen-demo-linechart.png)
 
 ```html
 <div data-tbk-keen-linechart 
@@ -263,13 +263,10 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
   };
 }]);
 ```
-### Metric
-
-![Metric](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-metric.png)
 
 ### Pie Chart
 
-![Pie chart](http://d26b395fwzu5fz.cloudfront.net/images/Keen-demo-piechart.png)
+![Pie chart](img/Keen-demo-piechart.png)
 
 ```html
 <div data-tbk-keen-piechart 
@@ -302,13 +299,6 @@ See some examples on the [demo page](https://theborakompanioni.github.io/angular
   };
 }]);
 ```
-
-### Table
-
-### Funnel
-
-![Funnel as a bar chart](img/funnel-barchart.png)
-
 
 
  Contribute

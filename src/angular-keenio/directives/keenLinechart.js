@@ -2,7 +2,7 @@
 
   angular.module('angular-keenio.directives')
 
-    .directive('tbkKeenLinechart', [function() {
+    .directive('tbkKeenLinechart', [function () {
       var d = {
         scope: {
           query: '=',
@@ -17,22 +17,21 @@
           colorMapping: '=?',
           labelMapping: '=?'
         },
-        controller: ['$scope', function($scope) {
+        controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
-            chartArea: {
-              height: '85%',
-              left: '5%',
-              top: '5%',
-              width: '100%'
-            },
-            bar: {
-              groupWidth: $scope.groupWidth || '85%'
-            },
-            isStacked: !!$scope.isStacked
-          };
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              bar: {
+                groupWidth: $scope.groupWidth || '85%'
+              },
+              isStacked: !!$scope.isStacked
+            };
         }],
-        template:
-        '<div data-tbk-keen-chart="linechart" ' +
+        template: '<div data-tbk-keen-chart="linechart" ' +
         ' query="query" ' +
         ' height="{{height}}" ' +
         ' width="{{width}}" ' +

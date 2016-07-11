@@ -18,14 +18,14 @@
         },
         controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
-            chartArea: {
-              height: '85%',
-              left: '5%',
-              top: '5%',
-              width: '100%'
-            },
-            pieHole: $scope.pieHole || 0.4
-          };
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              pieHole: $scope.pieHole || 0.4
+            };
         }],
         template: '<div data-tbk-keen-chart="piechart" ' +
         ' query="query" ' +
@@ -70,14 +70,14 @@
           $scope.query = new tbkKeen.Query($scope.analysisType, $scope.queryOptions);
 
           $scope.chartOptions = $scope.chartOptions || {
-            chartArea: {
-              height: '85%',
-              left: '5%',
-              top: '5%',
-              width: '100%'
-            },
-            pieHole: 0.4
-          };
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              pieHole: 0.4
+            };
         }],
         template: '<div data-tbk-keen-piechart ' +
         ' query="query" ' +

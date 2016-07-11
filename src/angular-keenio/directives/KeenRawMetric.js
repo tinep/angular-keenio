@@ -1,4 +1,3 @@
-
 (function (angular) {
 
   angular.module('angular-keenio.directives')
