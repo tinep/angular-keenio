@@ -15,7 +15,9 @@
           colors: '=?',
           labels: '=?',
           colorMapping: '=?',
-          labelMapping: '=?'
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
         },
         controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -40,6 +42,8 @@
         ' labels="labels" ' +
         ' color-mapping="colorMapping" ' +
         ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
         '></div>'
       };
 

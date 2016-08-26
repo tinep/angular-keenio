@@ -1,7 +1,7 @@
 (function (angular) {
 
   angular.module('angular-keenio.directives')
-    .directive('tbkKeenChart', [function () {
+    .directive('tbkKeenChart', ['fetchDeepObject', function (fetchDeepObject) {
       var d = {
         scope: {
           chartType: '@tbkKeenChart',
@@ -14,6 +14,8 @@
           labels: '=?',
           colorMapping: '=?',
           labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
         },
         controller: ['$scope', 'tbkKeenClient', function ($scope, tbkKeenClient) {
           $scope.keenClient = tbkKeenClient;
@@ -29,6 +31,30 @@
                 width: '80%'
               }
             };
+						
+					var originalLabelMapping = angular.copy($scope.labelMapping);
+          var originalColorMapping = angular.copy($scope.colorMapping);
+
+          if (!angular.isUndefined($scope.labelMappingProperty)) {
+						angular.forEach(originalLabelMapping, function (label, index) {
+							originalLabelMapping[index] = fetchDeepObject(label, $scope.labelMappingProperty);
+              });
+
+              $scope.labelMapping = originalLabelMapping;
+          }
+
+          if (!angular.isUndefined($scope.colorMappingProperty)) {
+						angular.forEach(originalColorMapping, function (label, index) {
+							if (angular.isUndefined($scope.labelMappingProperty)) {
+								originalColorMapping[index] = fetchDeepObject(label, $scope.colorMappingProperty);
+							} else {
+								var labelAsIndex = fetchDeepObject(label, $scope.labelMappingProperty)
+								originalColorMapping[labelAsIndex] = fetchDeepObject(label, $scope.colorMappingProperty);
+							}
+						});
+
+						$scope.colorMapping = originalColorMapping;
+					}
         }],
         link: function ($scope, $element) {
           $scope.keenClient.draw($scope.query, $element[0], {

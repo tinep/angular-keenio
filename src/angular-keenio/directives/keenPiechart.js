@@ -14,7 +14,9 @@
           colors: '=?',
           labels: '=?',
           colorMapping: '=?',
-          labelMapping: '=?'
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+					labelMappingProperty: '@'
         },
         controller: ['$scope', function ($scope) {
           $scope.chartOptions = $scope.chartOptions || {
@@ -25,8 +27,8 @@
                 width: '100%'
               },
               pieHole: $scope.pieHole || 0.4
-            };
-        }],
+						};
+					}],
         template: '<div data-tbk-keen-chart="piechart" ' +
         ' query="query" ' +
         ' height="{{height}}" ' +
@@ -36,6 +38,8 @@
         ' labels="labels" ' +
         ' color-mapping="colorMapping" ' +
         ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
         '></div>'
       };
 

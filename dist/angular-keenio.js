@@ -19,6 +19,430 @@
 
   angular.module('angular-keenio.directives')
 
+    .directive('tbkKeenAreachart', ['fetchDeepObject', function (fetchDeepObject) {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+					labelMappingProperty: '@'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '80%'
+              },
+              isStacked: !!$scope.isStacked
+            };
+        }],
+        template: '<div data-tbk-keen-chart="areachart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenBarchart', [function () {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          groupWidth: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              bar: {
+                groupWidth: $scope.groupWidth || '85%'
+              },
+              isStacked: !!$scope.isStacked
+            };
+        }],
+        template: '<div data-tbk-keen-chart="barchart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+    .directive('tbkKeenChart', ['fetchDeepObject', function (fetchDeepObject) {
+      var d = {
+        scope: {
+          chartType: '@tbkKeenChart',
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
+        },
+        controller: ['$scope', 'tbkKeenClient', function ($scope, tbkKeenClient) {
+          $scope.keenClient = tbkKeenClient;
+
+          $scope.height = $scope.height || 250;
+          $scope.width = $scope.width || 'auto';
+          $scope.title = $scope.title || false;
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '80%'
+              }
+            };
+						
+					var originalLabelMapping = angular.copy($scope.labelMapping);
+          var originalColorMapping = angular.copy($scope.colorMapping);
+
+          if (!angular.isUndefined($scope.labelMappingProperty)) {
+						angular.forEach(originalLabelMapping, function (label, index) {
+							originalLabelMapping[index] = fetchDeepObject(label, $scope.labelMappingProperty);
+              });
+
+              $scope.labelMapping = originalLabelMapping;
+          }
+
+          if (!angular.isUndefined($scope.colorMappingProperty)) {
+						angular.forEach(originalColorMapping, function (label, index) {
+							if (angular.isUndefined($scope.labelMappingProperty)) {
+								originalColorMapping[index] = fetchDeepObject(label, $scope.colorMappingProperty);
+							} else {
+								var labelAsIndex = fetchDeepObject(label, $scope.labelMappingProperty)
+								originalColorMapping[labelAsIndex] = fetchDeepObject(label, $scope.colorMappingProperty);
+							}
+						});
+
+						$scope.colorMapping = originalColorMapping;
+					}
+        }],
+        link: function ($scope, $element) {
+          $scope.keenClient.draw($scope.query, $element[0], {
+            chartType: $scope.chartType,
+            title: $scope.title,
+            height: $scope.height,
+            width: $scope.width,
+            chartOptions: $scope.chartOptions,
+            colors: $scope.colors,
+            labels: $scope.labels,
+            colorMapping: $scope.colorMapping,
+            labelMapping: $scope.labelMapping
+          });
+        }
+      };
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenColumnchart', [function () {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          groupWidth: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              bar: {
+                groupWidth: $scope.groupWidth || '85%'
+              },
+              isStacked: !!$scope.isStacked
+            };
+        }],
+        template: '<div data-tbk-keen-chart="columnchart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenLinechart', [function () {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          isStacked: '@',
+          groupWidth: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+          labelMappingProperty: '@'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              bar: {
+                groupWidth: $scope.groupWidth || '85%'
+              },
+              isStacked: !!$scope.isStacked
+            };
+        }],
+        template: '<div data-tbk-keen-chart="linechart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenMetric', [function () {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          chartOptions: '=?',
+          colors: '=?'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.colors = $scope.colors || [];
+        }],
+        template: '<div data-tbk-keen-chart="metric" ' +
+        ' title="{{title}}" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        '></div>'
+      };
+
+      return d;
+    }]);
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
+    .directive('tbkKeenPiechart', [function () {
+      var d = {
+        scope: {
+          query: '=',
+          title: '@',
+          width: '@',
+          height: '@',
+          pieHole: '@',
+          chartOptions: '=?',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?',
+					colorMappingProperty: '@',
+					labelMappingProperty: '@'
+        },
+        controller: ['$scope', function ($scope) {
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              pieHole: $scope.pieHole || 0.4
+						};
+					}],
+        template: '<div data-tbk-keen-chart="piechart" ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+				' color-mapping-property="{{colorMappingProperty}}" ' +
+        ' label-Mapping-property="{{labelMappingProperty}}" ' +
+        '></div>'
+      };
+
+      return d;
+    }])
+
+    .directive('tbkKeenDefaultPiechart', [function () {
+      var d = {
+        scope: {
+          analysisType: '@',
+          eventCollection: '@',
+          groupBy: '@',
+          queryOptions: '=?',
+          chartOptions: '=?',
+          title: '@',
+          width: '@',
+          height: '@',
+          colors: '=?',
+          labels: '=?',
+          colorMapping: '=?',
+          labelMapping: '=?'
+        },
+        controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
+          $scope.analysisType = $scope.analysisType || 'count';
+
+          $scope.height = $scope.height || '250';
+          $scope.width = $scope.width || 'auto';
+          $scope.queryOptions = $scope.queryOptions;
+          $scope.queryOptions.eventCollection = $scope.eventCollection;
+          $scope.queryOptions.groupBy = $scope.groupBy;
+
+          $scope.query = new tbkKeen.Query($scope.analysisType, $scope.queryOptions);
+
+          $scope.chartOptions = $scope.chartOptions || {
+              chartArea: {
+                height: '85%',
+                left: '5%',
+                top: '5%',
+                width: '100%'
+              },
+              pieHole: 0.4
+            };
+        }],
+        template: '<div data-tbk-keen-piechart ' +
+        ' query="query" ' +
+        ' height="{{height}}" ' +
+        ' width="{{width}}" ' +
+        ' title="{{title}}" ' +
+        ' chart-options="chartOptions" ' +
+        ' colors="colors" ' +
+        ' labels="labels" ' +
+        ' color-mapping="colorMapping" ' +
+        ' label-Mapping="labelMapping" ' +
+        '></div>'
+      };
+
+      return d;
+    }])
+  ;
+
+})(angular);
+
+(function (angular) {
+
+  angular.module('angular-keenio.directives')
+
     .directive('tbkKeenRawMetric', [
       '$injector', '$filter', 'tbkKeenClient', function ($injector, $filter, tbkKeenClient) {
         var prepareClasses = function (scope) {
@@ -180,384 +604,6 @@
 
         return d;
       }])
-  ;
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenAreachart', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          isStacked: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '80%'
-              },
-              isStacked: !!$scope.isStacked
-            };
-        }],
-        template: '<div data-tbk-keen-chart="areachart" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }]);
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenBarchart', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          isStacked: '@',
-          groupWidth: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '100%'
-              },
-              bar: {
-                groupWidth: $scope.groupWidth || '85%'
-              },
-              isStacked: !!$scope.isStacked
-            };
-        }],
-        template: '<div data-tbk-keen-chart="barchart" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }]);
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-    .directive('tbkKeenChart', [function () {
-      var d = {
-        scope: {
-          chartType: '@tbkKeenChart',
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?',
-        },
-        controller: ['$scope', 'tbkKeenClient', function ($scope, tbkKeenClient) {
-          $scope.keenClient = tbkKeenClient;
-
-          $scope.height = $scope.height || 250;
-          $scope.width = $scope.width || 'auto';
-          $scope.title = $scope.title || false;
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '80%'
-              }
-            };
-        }],
-        link: function ($scope, $element) {
-          $scope.keenClient.draw($scope.query, $element[0], {
-            chartType: $scope.chartType,
-            title: $scope.title,
-            height: $scope.height,
-            width: $scope.width,
-            chartOptions: $scope.chartOptions,
-            colors: $scope.colors,
-            labels: $scope.labels,
-            colorMapping: $scope.colorMapping,
-            labelMapping: $scope.labelMapping
-          });
-        }
-      };
-      return d;
-    }]);
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenColumnchart', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          isStacked: '@',
-          groupWidth: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '100%'
-              },
-              bar: {
-                groupWidth: $scope.groupWidth || '85%'
-              },
-              isStacked: !!$scope.isStacked
-            };
-        }],
-        template: '<div data-tbk-keen-chart="columnchart" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }]);
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenLinechart', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          isStacked: '@',
-          groupWidth: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '100%'
-              },
-              bar: {
-                groupWidth: $scope.groupWidth || '85%'
-              },
-              isStacked: !!$scope.isStacked
-            };
-        }],
-        template: '<div data-tbk-keen-chart="linechart" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }]);
-
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenMetric', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          chartOptions: '=?',
-          colors: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.colors = $scope.colors || [];
-        }],
-        template: '<div data-tbk-keen-chart="metric" ' +
-        ' title="{{title}}" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        '></div>'
-      };
-
-      return d;
-    }]);
-})(angular);
-
-(function (angular) {
-
-  angular.module('angular-keenio.directives')
-
-    .directive('tbkKeenPiechart', [function () {
-      var d = {
-        scope: {
-          query: '=',
-          title: '@',
-          width: '@',
-          height: '@',
-          pieHole: '@',
-          chartOptions: '=?',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', function ($scope) {
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '100%'
-              },
-              pieHole: $scope.pieHole || 0.4
-            };
-        }],
-        template: '<div data-tbk-keen-chart="piechart" ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }])
-
-    .directive('tbkKeenDefaultPiechart', [function () {
-      var d = {
-        scope: {
-          analysisType: '@',
-          eventCollection: '@',
-          groupBy: '@',
-          queryOptions: '=?',
-          chartOptions: '=?',
-          title: '@',
-          width: '@',
-          height: '@',
-          colors: '=?',
-          labels: '=?',
-          colorMapping: '=?',
-          labelMapping: '=?'
-        },
-        controller: ['$scope', 'tbkKeen', function ($scope, tbkKeen) {
-          $scope.analysisType = $scope.analysisType || 'count';
-
-          $scope.height = $scope.height || '250';
-          $scope.width = $scope.width || 'auto';
-          $scope.queryOptions = $scope.queryOptions;
-          $scope.queryOptions.eventCollection = $scope.eventCollection;
-          $scope.queryOptions.groupBy = $scope.groupBy;
-
-          $scope.query = new tbkKeen.Query($scope.analysisType, $scope.queryOptions);
-
-          $scope.chartOptions = $scope.chartOptions || {
-              chartArea: {
-                height: '85%',
-                left: '5%',
-                top: '5%',
-                width: '100%'
-              },
-              pieHole: 0.4
-            };
-        }],
-        template: '<div data-tbk-keen-piechart ' +
-        ' query="query" ' +
-        ' height="{{height}}" ' +
-        ' width="{{width}}" ' +
-        ' title="{{title}}" ' +
-        ' chart-options="chartOptions" ' +
-        ' colors="colors" ' +
-        ' labels="labels" ' +
-        ' color-mapping="colorMapping" ' +
-        ' label-Mapping="labelMapping" ' +
-        '></div>'
-      };
-
-      return d;
-    }])
   ;
 
 })(angular);
@@ -851,5 +897,20 @@
         properties: properties,
         property: property
       };
+    }])
+	
+	.factory('fetchDeepObject', [function() {
+      return function(obj, prop) {
+	    if(typeof obj === 'undefined') {
+	      return false;
+        }
+
+        var _index = prop.indexOf('.')
+        if(_index > -1) {
+          return fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
+        }
+
+        return obj[prop];
+      }
     }]);
 })(angular);
