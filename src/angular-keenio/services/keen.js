@@ -51,8 +51,23 @@
       }];
     }])
 
-    .factory('tbkKeen', ['$window', function ($window) {
-      return $window.Keen;
+      .factory('tbkKeen', ['$window', '$timeout', '$q', function ($window, $timeout, $q) {
+      var d = $q.defer();
+
+      var getKeen = function () {
+        if ($window.Keen) {
+          $timeout(function () {
+            d.resolve($window.Keen);
+          }, 0);
+        } else {
+          $timeout(function () {
+            return getKeen();
+          }, 100);
+        }
+      };
+      getKeen();
+
+      return d.promise;
     }])
 
     /**
@@ -61,7 +76,9 @@
      * which will use promises instead of callbacks
      */
     .factory('tbkKeenClient', ['tbkKeen', 'tbkKeenConfig', function (Keen, KeenConfig) {
-      return new Keen(KeenConfig);
+      return Keen.then(function (Keen) {
+        return new Keen(KeenConfig);
+      });
     }])
 
     .factory('tbkKeenHttpGet', ['tbkKeenConfig', 'tbkKeenClient', function (keenConfig, keenClient) {
@@ -78,7 +95,7 @@
      * Fatory providing Keen.io APIs in the Angular way
      */
     .factory('angularKeenClient', ['tbkKeen', 'tbkKeenConfig', '$q', function (Keen, KeenConfig, $q) {
-      var client = new Keen(KeenConfig);
+      //var client = new Keen(KeenConfig);
 
       /**
        * Records a single event in Keen.io.
@@ -87,17 +104,22 @@
        * @returns {deferred.promise|{then, catch, finally}}
        */
       function addEvent(collection, properties) {
-        var deferred = $q.defer();
+        return Keen.then(function (Keen) {
 
-        client.addEvent(collection, properties, function (err, res) {
-          if (err) {
-            deferred.reject(err);
-          }
-          else {
-            deferred.resolve(res);
-          }
+          var client = new Keen(KeenConfig);
+          var deferred = $q.defer();
+
+          client.addEvent(collection, properties, function (err, res) {
+            if (err) {
+              deferred.reject(err);
+            }
+            else {
+              deferred.resolve(res);
+            }
+          });
+          return deferred.promise;
+
         });
-        return deferred.promise;
       }
 
       /**
@@ -120,21 +142,29 @@
        * @returns {deferred.promise|{then, catch, finally}}
        */
       function addEvents(events) {
-        var deferred = $q.defer();
+        return Keen.then(function (Keen) {
 
-        client.addEvents(events, function (err, res) {
-          if (err) {
-            deferred.reject(err);
-          }
-          else {
-            deferred.resolve(res);
-          }
+          var client = new Keen(KeenConfig);
+          var deferred = $q.defer();
+
+          client.addEvents(events, function (err, res) {
+            if (err) {
+              deferred.reject(err);
+            }
+            else {
+              deferred.resolve(res);
+            }
+          });
+          return deferred.promise;
+
         });
-        return deferred.promise;
       }
 
       function Query(analysisType, properties) {
-        return client.Query(analysisType, properties);
+        return Keen.then(function (Keen) {
+          //var client = new Keen(KeenConfig);
+          return new Keen.Query(analysisType, properties);
+        });
       }
 
       /**
@@ -143,16 +173,22 @@
        * @returns {deferred.promise|{then, catch, finally}}
        */
       function run(queries) {
-        var deferred = $q.defer();
-        client.run(queries, function (err, res) {
-          if (err) {
-            deferred.reject(err);
-          }
-          else {
-            deferred.resolve(res);
-          }
+        return Keen.then(function (Keen) {
+
+          var client = new Keen(KeenConfig);
+          var deferred = $q.defer();
+
+          client.run(queries, function (err, res) {
+            if (err) {
+              deferred.reject(err);
+            }
+            else {
+              deferred.resolve(res);
+            }
+          });
+          return deferred.promise;
+
         });
-        return deferred.promise;
       }
 
       /**
@@ -162,7 +198,12 @@
        * @param config
        */
       function draw(query, node, config) {
-        client.draw(query, node, config);
+        return Keen.then(function (Keen) {
+
+          var client = new Keen(KeenConfig);
+          client.draw(query, node, config);
+
+        });
       }
 
       function collections() {
@@ -206,17 +247,22 @@
       }
 
       function _sendRequest(url) {
-        var deferred = $q.defer();
+        return Keen.then(function (Keen) {
 
-        client.get(url, null, client.masterKey(), function (err, res) {
-          if (err) {
-            deferred.reject(err);
-          }
-          else {
-            deferred.resolve(res);
-          }
+          var client = new Keen(KeenConfig);
+          var deferred = $q.defer();
+
+          client.get(url, null, client.masterKey(), function (err, res) {
+            if (err) {
+              deferred.reject(err);
+            }
+            else {
+              deferred.resolve(res);
+            }
+          });
+          return deferred.promise;
+
         });
-        return deferred.promise;
       }
 
       return {
@@ -231,19 +277,19 @@
         property: property
       };
     }])
-	
+
 	.factory('fetchDeepObject', [function() {
       return function(obj, prop) {
 	    if(typeof obj === 'undefined') {
 	      return false;
         }
 
-        var _index = prop.indexOf('.')
+        var _index = prop.indexOf('.');
         if(_index > -1) {
           return fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
         }
 
         return obj[prop];
-      }
+      };
     }]);
 })(angular);

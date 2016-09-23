@@ -31,7 +31,7 @@
                 width: '80%'
               }
             };
-						
+
 					var originalLabelMapping = angular.copy($scope.labelMapping);
           var originalColorMapping = angular.copy($scope.colorMapping);
 
@@ -48,7 +48,7 @@
 							if (angular.isUndefined($scope.labelMappingProperty)) {
 								originalColorMapping[index] = fetchDeepObject(label, $scope.colorMappingProperty);
 							} else {
-								var labelAsIndex = fetchDeepObject(label, $scope.labelMappingProperty)
+								var labelAsIndex = fetchDeepObject(label, $scope.labelMappingProperty);
 								originalColorMapping[labelAsIndex] = fetchDeepObject(label, $scope.colorMappingProperty);
 							}
 						});
@@ -57,17 +57,23 @@
 					}
         }],
         link: function ($scope, $element) {
-          $scope.keenClient.draw($scope.query, $element[0], {
-            chartType: $scope.chartType,
-            title: $scope.title,
-            height: $scope.height,
-            width: $scope.width,
-            chartOptions: $scope.chartOptions,
-            colors: $scope.colors,
-            labels: $scope.labels,
-            colorMapping: $scope.colorMapping,
-            labelMapping: $scope.labelMapping
-          });
+            $scope.$watch('query', function (query) {
+                if (query) {
+                    $scope.keenClient.then(function(keenClient){
+                        keenClient.draw($scope.query, $element[0], {
+                            chartType: $scope.chartType,
+                            title: $scope.title,
+                            height: $scope.height,
+                            width: $scope.width,
+                            chartOptions: $scope.chartOptions,
+                            colors: $scope.colors,
+                            labels: $scope.labels,
+                            colorMapping: $scope.colorMapping,
+                            labelMapping: $scope.labelMapping
+                        });
+                    });
+                }
+            });
         }
       };
       return d;
